@@ -107,7 +107,7 @@ router.post('/users/:_id/asks', function (req, res, next) {
 
 router.get('/users/:_id/OpenAsks', function (req, res, next) {
     UserAsk.find({'user': req.params._id, 'status': 'open'})
-        .populate('ask', 'statusDate status content')
+        .populate('ask', 'createDate status content')
         .exec(function (err, skippedAsks) {
             if (err) {
                 next(err);
@@ -136,7 +136,7 @@ router.post('/users/:_id/OpenAsks', function (req, res, next) {
 
 router.get('/users/:_id/SkippedAsks', function (req, res, next) {
     UserAsk.find({'user': req.params._id, 'status': 'skipped'})
-        .populate('ask', 'statusDate status content')
+        .populate('ask', 'createDate status content')
         .exec(function (err, skippedAsks) {
             if (err) {
                 next(err);
