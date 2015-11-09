@@ -10,7 +10,7 @@ router.all(function (req, res, next) {
     next();
 });
 
-router.param('id', function (req, res, next, id) {
+router.param('_id', function (req, res, next, _id) {
     next();
 });
 
@@ -51,8 +51,8 @@ router.get('/users', function (req, res, next) {
     });
 });
 
-router.get('/users/:id', function (req, res, next) {
-    User.findOne({'_id': req.params.id}).exec(function (err, user) {
+router.get('/users/:_id', function (req, res, next) {
+    User.findOne({'_id': req.params._id}).exec(function (err, user) {
         if (err) {
             next(err);
             return;
@@ -62,7 +62,7 @@ router.get('/users/:id', function (req, res, next) {
     });
 });
 
-router.get('/users/:id/feed', function (req, res, next) {
+router.get('/users/:_id/feed', function (req, res, next) {
     Ask.find({}).exec(function (err, asks) {
         if (err) {
             next(err);
@@ -73,8 +73,8 @@ router.get('/users/:id/feed', function (req, res, next) {
     });
 });
 
-router.get('/users/:id/asks', function (req, res, next) {
-    Ask.find({'userId': req.params.id}).exec(function (err, asks) {
+router.get('/users/:_id/asks', function (req, res, next) {
+    Ask.find({'userId': req.params._id}).exec(function (err, asks) {
         if (err) {
             next(err);
             return;
@@ -84,9 +84,9 @@ router.get('/users/:id/asks', function (req, res, next) {
     });
 });
 
-router.post('/users/:id/asks', function (req, res, next) {
+router.post('/users/:_id/asks', function (req, res, next) {
     var ask = new Ask();
-    ask.userId = req.params.id;
+    ask.userId = req.params._id;
     ask.createDate = Date.now();
     ask.status = req.body.status;
     ask.content = req.body.content;
