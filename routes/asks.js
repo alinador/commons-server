@@ -9,7 +9,7 @@ router.all(function (req, res, next) {
     next();
 });
 
-router.param('id', function (req, res, next, id) {
+router.param('_id', function (req, res, next, id) {
     next();
 });
 
@@ -17,7 +17,7 @@ router.get('/ask', function (req, res) {
     res.json("hello");
 });
 
-router.get('/ask/:id', function (req, res) {
+router.get('/ask/:_id', function (req, res) {
     res.json("hello " + req.params.id);
 });
 
