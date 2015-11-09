@@ -52,7 +52,7 @@ router.get('/users', function (req, res, next) {
 });
 
 router.get('/users/:id', function (req, res, next) {
-    User.findOne({'facebookId': req.body.facebookId}).exec(function (err, user) {
+    User.findOne({'_id': req.params.id}).exec(function (err, user) {
         if (err) {
             next(err);
             return;
