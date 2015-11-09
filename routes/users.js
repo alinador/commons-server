@@ -66,14 +66,13 @@ router.get('/users/:id/asks', function (req, res, next) {
     ask.save(function (err) {
         if (err) {
             next(err);
-            return;
         }
     });
 
     res.json(ask);
 });
 
-router.post('/user/:id/asks', function (req, res, next) {
+router.post('/users/:id/asks', function (req, res, next) {
     var ask = new Ask();
     ask.userId = req.params.id;
     ask.createDate = Date.now();
@@ -84,7 +83,6 @@ router.post('/user/:id/asks', function (req, res, next) {
     ask.save(function (err) {
         if (err) {
             next(err);
-            return;
         }
     });
 
