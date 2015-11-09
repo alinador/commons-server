@@ -2,8 +2,22 @@
 
 
 ## GET /api/v1.0/users
-### Description:
+**Description**
+Returns a list of registered users.
 
+**Sample returned value**
+```javascript
+[
+  {
+    "_id": "56409165432c3df6686f11c5",
+    "facebookAccessToken": "...",
+    "facebookId": "...",
+    "createDate": "2015-11-09T12:28:21.065Z",
+    "email": ...,
+    "name": "..."
+  }
+]
+```
 
 ## POST /api/v1.0/users/register
 
