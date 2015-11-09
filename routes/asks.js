@@ -14,25 +14,29 @@ router.param('_id', function (req, res, next, id) {
 });
 
 router.get('/asks', function (req, res, next) {
-    Ask.find().exec(function (err, ask) {
-        if (err) {
-            next(err);
-            return;
-        }
+    Ask.find()
+        .populate('user', '_id name')
+        .exec(function (err, ask) {
+            if (err) {
+                next(err);
+                return;
+            }
 
-        res.json(ask);
-    });
+            res.json(ask);
+        });
 });
 
 router.get('/asks/:_id', function (req, res, next) {
-    Ask.findOne({'_id': req.params._id}).exec(function (err, ask) {
-        if (err) {
-            next(err);
-            return;
-        }
+    Ask.findOne({'_id': req.params._id})
+        .populate('user', '_id name')
+        .exec(function (err, ask) {
+            if (err) {
+                next(err);
+                return;
+            }
 
-        res.json(ask);
-    });
+            res.json(ask);
+        });
 });
 
 module.exports = router;
