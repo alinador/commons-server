@@ -1,9 +1,10 @@
 'use strict';
 
 var express = require('express');
-var User = require('../model/user');
-var Ask = require('../model/ask');
-var UserAsk = require('../model/userAsk');
+var User = require('../model/User');
+var Ask = require('../model/Ask');
+var SkippedAsk = require('../model/SkippedAsk');
+var OpenAsk = require('../model/OpenAsk');
 
 var router = express.Router();
 
@@ -104,6 +105,35 @@ router.post('/users/:_id/asks', function (req, res, next) {
     });
 
     res.json(ask);
+});
+
+router.get('/users/:_id/SkippedAsks', function (req, res, next) {
+    SkippedAsk.find({'userId': req.params._id})
+        .populate('userId')
+        .populate('askId')
+        .exec(function (err, skippedAsks) {
+            if (err) {
+                next(err);
+                return;
+            }
+
+            res.json(skippedAsks);
+        });
+});
+
+router.post('/users/:_id/SkippedAsks', function (req, res, next) {
+    var skippedAsk = new SkippedAsk();
+    skippedAsk.userId = req.params._id;
+    skippedAsk.askId = req.body.askId;
+    skippedAsk.skippedDate = Date.now();
+
+    skippedAsk.save(function (err) {
+        if (err) {
+            next(err);
+        }
+    });
+
+    res.json(skippedAsk);
 });
 
 module.exports = router;

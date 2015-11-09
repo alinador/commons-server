@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var Ask = require('../model/ask');
+var Ask = require('../model/Ask');
 
 var router = express.Router();
 
