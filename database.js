@@ -3,12 +3,22 @@
 var logger = require('log4js').getLogger('db');
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/commons');
+var database = {
+    connect: connect
+};
 
-mongoose.connection.on('error', function (callback) {
-    logger.error('Connection to database failed.');
-});
+module.exports = database;
 
-mongoose.connection.once('open', function (callback) {
-    logger.info('Connection to database success.');
-});
+function connect() {
+    logger.info('Connecting to database.');
+
+    mongoose.connection.on('error', function (callback) {
+        logger.error('Connecting to database failed.');
+    });
+
+    mongoose.connection.once('open', function (callback) {
+        logger.info('Connecting to database success.');
+    });
+
+    mongoose.connect('mongodb://localhost/commons');
+}
