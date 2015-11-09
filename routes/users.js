@@ -33,8 +33,13 @@ router.post('/users/register', function (req, res, next) {
             user.save(function (err) {
                 if (err) {
                     next(err);
+                    return;
                 }
+
+                res.json(user);
             });
+
+            return;
         }
 
         res.json(user);
@@ -99,10 +104,11 @@ router.post('/users/:_id/asks', function (req, res, next) {
     ask.save(function (err) {
         if (err) {
             next(err);
+            return;
         }
-    });
 
-    res.json(ask);
+        res.json(ask);
+    });
 });
 
 router.get('/users/:_id/OpenAsks', function (req, res, next) {
@@ -128,10 +134,11 @@ router.post('/users/:_id/OpenAsks', function (req, res, next) {
     userAsk.save(function (err) {
         if (err) {
             next(err);
+            return;
         }
-    });
 
-    res.json(userAsk);
+        res.json(userAsk);
+    });
 });
 
 router.get('/users/:_id/SkippedAsks', function (req, res, next) {
@@ -157,10 +164,11 @@ router.post('/users/:_id/SkippedAsks', function (req, res, next) {
     userAsk.save(function (err) {
         if (err) {
             next(err);
+            return;
         }
-    });
 
-    res.json(userAsk);
+        res.json(userAsk);
+    });
 });
 
 module.exports = router;
