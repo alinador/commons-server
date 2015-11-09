@@ -44,7 +44,6 @@ app.use(function (err, req, res, next) {
 });
 
 function developmentFormatLine(tokens, req, res) {
-    // get the status code if response written
     var status = res._header ? res.statusCode : undefined;
 
     // get status color
@@ -58,12 +57,13 @@ function developmentFormatLine(tokens, req, res) {
     var fn = developmentFormatLine[color];
 
     if (!fn) {
-        // compile
-        fn = developmentFormatLine[color] = morgan.compile('\x1b[0m[:date[iso]] :method :url \x1b[' +
-            color + 'm:status \x1b[0m:response-time ms - :res[content-length]\x1b[0m');
+        fn = developmentFormatLine[color] = morgan.compile(
+            '\x1b[0m[:date[iso]] :method :url \x1b[' +
+            color +
+            'm:status \x1b[0m:response-time ms - :res[content-length]\x1b[0m');
     }
 
-    return fn(tokens, req, res)
+    return fn(tokens, req, res);
 }
 
 module.exports = app;
