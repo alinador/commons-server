@@ -63,25 +63,29 @@ router.get('/users/:_id', function (req, res, next) {
 });
 
 router.get('/users/:_id/feed', function (req, res, next) {
-    Ask.find({}).exec(function (err, asks) {
-        if (err) {
-            next(err);
-            return;
-        }
+    Ask.find({})
+        .populate('userId')
+        .exec(function (err, asks) {
+            if (err) {
+                next(err);
+                return;
+            }
 
-        res.json(asks);
-    });
+            res.json(asks);
+        });
 });
 
 router.get('/users/:_id/asks', function (req, res, next) {
-    Ask.find({'userId': req.params._id}).exec(function (err, asks) {
-        if (err) {
-            next(err);
-            return;
-        }
+    Ask.find({'userId': req.params._id})
+        .populate('userId')
+        .exec(function (err, asks) {
+            if (err) {
+                next(err);
+                return;
+            }
 
-        res.json(asks);
-    });
+            res.json(asks);
+        });
 });
 
 router.post('/users/:_id/asks', function (req, res, next) {
