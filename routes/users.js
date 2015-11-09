@@ -66,7 +66,7 @@ router.get('/users/:_id', function (req, res, next) {
 
 router.get('/users/:_id/feed', function (req, res, next) {
     Ask.find({})
-        .populate('userId')
+        .populate('userId', 'name')
         .exec(function (err, asks) {
             if (err) {
                 next(err);
@@ -79,7 +79,6 @@ router.get('/users/:_id/feed', function (req, res, next) {
 
 router.get('/users/:_id/asks', function (req, res, next) {
     Ask.find({'userId': req.params._id})
-        .populate('userId')
         .exec(function (err, asks) {
             if (err) {
                 next(err);
@@ -108,9 +107,8 @@ router.post('/users/:_id/asks', function (req, res, next) {
 });
 
 router.get('/users/:_id/SkippedAsks', function (req, res, next) {
-    SkippedAsk.find({'userId': req.params._id})
-        .populate('userId')
-        .populate('askId')
+    SkippedAsk.find({'user': req.params._id})
+        .populate('ask', 'createDate status content')
         .exec(function (err, skippedAsks) {
             if (err) {
                 next(err);
@@ -123,8 +121,8 @@ router.get('/users/:_id/SkippedAsks', function (req, res, next) {
 
 router.post('/users/:_id/SkippedAsks', function (req, res, next) {
     var skippedAsk = new SkippedAsk();
-    skippedAsk.userId = req.params._id;
-    skippedAsk.askId = req.body.askId;
+    skippedAsk.user = req.params._id;
+    skippedAsk.ask = req.body.askId;
     skippedAsk.skippedDate = Date.now();
 
     skippedAsk.save(function (err) {
@@ -134,6 +132,34 @@ router.post('/users/:_id/SkippedAsks', function (req, res, next) {
     });
 
     res.json(skippedAsk);
+});
+
+router.get('/users/:_id/OpenAsks', function (req, res, next) {
+    OpenAsk.find({'user': req.params._id})
+        .populate('ask', 'createDate status content')
+        .exec(function (err, openAsks) {
+            if (err) {
+                next(err);
+                return;
+            }
+
+            res.json(openAsks);
+        });
+});
+
+router.post('/users/:_id/OpenAsks', function (req, res, next) {
+    var openAsk = new OpenAsk();
+    openAsk.user = req.params._id;
+    openAsk.ask = req.body.askId;
+    openAsk.openDate = Date.now();
+
+    openAsk.save(function (err) {
+        if (err) {
+            next(err);
+        }
+    });
+
+    res.json(openAsk);
 });
 
 module.exports = router;
