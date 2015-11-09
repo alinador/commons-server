@@ -4,8 +4,11 @@ var express = require('express');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var database = require('./database');
 var users = require('./routes/users');
 var asks = require('./routes/asks');
+
+database.connect();
 
 var app = express();
 app.use(morgan('dev'));

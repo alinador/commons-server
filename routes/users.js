@@ -21,9 +21,9 @@ router.get('/user', function (req, res) {
 router.post('/user/register', function (req, res, next) {
     User.findOne({'facebookId': req.body.facebookId}).exec(function (err, user) {
         if (err) {
-            next(err)
+            next(err);
 
-        } else if (user == null) {
+        } else if (user === null) {
             user = new User();
             user.name = req.body.name;
             user.email = null;
@@ -33,7 +33,7 @@ router.post('/user/register', function (req, res, next) {
 
             user.save(function (err) {
                 if (err) {
-                    next(err)
+                    next(err);
                 }
             });
         }
@@ -56,7 +56,7 @@ router.post('/user/:id/asks', function (req, res, next) {
 
     ask.save(function (err) {
         if (err) {
-            next(err)
+            next(err);
         }
     });
 

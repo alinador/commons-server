@@ -1,6 +1,6 @@
 'use strict';
 
-var logger = require('log4js').getLogger('db');
+var logger = require('log4js').getLogger('database');
 var mongoose = require('mongoose');
 
 var database = {
