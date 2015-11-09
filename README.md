@@ -2,10 +2,11 @@
 
 
 ## GET /api/v1.0/users
-### Description
-Returns the list of registered users.
 
-## Request
+### Description
+Return the list of registered users.
+
+### Request
     GET /api/v1.0/users
 
 ### Response
@@ -25,6 +26,7 @@ Returns the list of registered users.
     ]
 
 ## POST /api/v1.0/users/register
+
 ### Description
 Register a user with facebook account, and return the user id.
 Create a new user if the facebook account does not exists.
@@ -50,13 +52,17 @@ Create a new user if the facebook account does not exists.
     }
 
 ## GET /api/v1.0/users/:id
-## description
+
+### description
 Return a user.
 
-## Request
+### Request
     GET /api/v1.0/users/:id
 
-## Response
+### Response
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    
     {
         "_id": ...,
         "name": ...,
@@ -68,13 +74,17 @@ Return a user.
     }
 
 ## GET /api/v1.0/users/:id/feed
-## description
-Returns the user asks feed.
 
-## Request
+### description
+Return the user asks feed.
+
+### Request
     GET /api/v1.0/users/:id/feed
 
-## Response
+### Response
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    
     {
         "_id": ...,
         "user": {
@@ -90,13 +100,18 @@ Returns the user asks feed.
     }
     
 ## POST /api/v1.0/users/:id/asks
-## Description
-Returns the user posted asks.
 
-## Request
-    GET /api/v1.0/users/:id/asks
+### Description
+Post a new ask.
 
-## Response
+### Request
+    POST /api/v1.0/users/:id/asks
+    Content-Type: application/json
+
+### Response
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    
     {
         "_id": ...,
         "createDate": ...,
@@ -106,8 +121,52 @@ Returns the user posted asks.
     }
 
 
+## GET /api/v1.0/users/:id/asks/followed
+### description
+Return the user asks feed.
 
+### Request
+    GET /api/v1.0/users/:id/feed
+
+### Response
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    
+    {
+        "_id": ...,
+        "user": {
+            "_id": ...,
+            "name": ...,
+            "email": ...,
+            "avatarUrl": ...
+        },
+        "createDate": ...,
+        "status: ...,
+        "content": ...,
+        "isAnonymous": ...
+    }
+    
 ## PUT /api/v1.0/users/:id/asks/:askid
+
+### Description
+Update a user ask status.
+
+### Request
+    PUT /api/v1.0/users/:id/asks/:askid
+    Content-Type: application/json
+
+### Response
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    
+    {
+        "_id": ...,
+        "createDate": ...,
+        "status: ...,
+        "content": ...,
+        "isAnonymous": ...
+    }
+
 
 
 {
@@ -128,6 +187,6 @@ Sample return value
 {
 }
 
-GET /api/v1.0/users/:id/asks/followed
+
 
 

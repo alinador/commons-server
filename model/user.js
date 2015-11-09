@@ -6,10 +6,10 @@ var Schema = mongoose.Schema;
 var schema = new Schema({
     name: String,
     email: String,
+    avatarUrl: String,
     createDate: Date,
     facebookId: String,
-    facebookAccessToken: String,
-    imageUrl: String
+    facebookAccessToken: String
 });
 
 schema.index({"email": 1}, {unique: true});
