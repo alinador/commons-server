@@ -2,31 +2,111 @@
 
 
 ## GET /api/v1.0/users
-**Description**
-Returns a list of registered users.
+### Description
+Returns the list of registered users.
 
-**Sample returned value**
-```javascript
-[
-  {
-    "_id": "56409165432c3df6686f11c5",
-    "facebookAccessToken": "...",
-    "facebookId": "...",
-    "createDate": "2015-11-09T12:28:21.065Z",
-    "email": ...,
-    "name": "..."
-  }
-]
-```
+## Request
+    GET /api/v1.0/users
+
+### Response
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    
+    [
+      {
+        "_id": ...,
+        "name": ...,
+        "email": ...,
+        "avatarUrl: ...,
+        "createDate": ...,
+        "facebookId": ...,
+        "facebookAccessToken": ...
+      }
+    ]
 
 ## POST /api/v1.0/users/register
+### Description
+Register a user with facebook account, and return the user id.
+Create a new user if the facebook account does not exists.
 
+### Request
+    POST /api/v1.0/users/register
+    Content-Type: application/json
+    
+    {
+        "name": ...
+        "email": ...
+        "avatarUrl": ...,
+        "facebookId": ...
+        "facebookAccessToken": ...
+    }
+
+### Response
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    
+    {
+        "_id": ...
+    }
 
 ## GET /api/v1.0/users/:id
+## description
+Return a user.
 
+## Request
+    GET /api/v1.0/users/:id
+
+## Response
+    {
+        "_id": ...,
+        "name": ...,
+        "email": ...,
+        "avatarUrl: ...,
+        "createDate": ...,
+        "facebookId": ...,
+        "facebookAccessToken": ...
+    }
 
 ## GET /api/v1.0/users/:id/feed
+## description
+Returns the user asks feed.
+
+## Request
+    GET /api/v1.0/users/:id/feed
+
+## Response
+    {
+        "_id": ...,
+        "user": {
+            "_id": ...,
+            "name": ...,
+            "email": ...,
+            "avatarUrl": ...
+        },
+        "createDate": ...,
+        "status: ...,
+        "content": ...,
+        "isAnonymous": ...
+    }
+    
 ## POST /api/v1.0/users/:id/asks
+## Description
+Returns the user posted asks.
+
+## Request
+    GET /api/v1.0/users/:id/asks
+
+## Response
+    {
+        "_id": ...,
+        "createDate": ...,
+        "status: ...,
+        "content": ...,
+        "isAnonymous": ...
+    }
+
+
+
 ## PUT /api/v1.0/users/:id/asks/:askid
 
 
