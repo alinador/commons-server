@@ -13,12 +13,26 @@ router.param('_id', function (req, res, next, id) {
     next();
 });
 
-router.get('/ask', function (req, res) {
-    res.json("hello");
+router.get('/asks', function (req, res, next) {
+    Ask.find().exec(function (err, ask) {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        res.json(ask);
+    });
 });
 
-router.get('/ask/:_id', function (req, res) {
-    res.json("hello " + req.params.id);
+router.get('/asks/:_id', function (req, res, next) {
+    Ask.findOne({'_id': req.params._id}).exec(function (err, ask) {
+        if (err) {
+            next(err);
+            return;
+        }
+
+        res.json(ask);
+    });
 });
 
 module.exports = router;

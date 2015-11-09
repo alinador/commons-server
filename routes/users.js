@@ -3,6 +3,7 @@
 var express = require('express');
 var User = require('../model/user');
 var Ask = require('../model/ask');
+var UserAsk = require('../model/userAsk');
 
 var router = express.Router();
 
