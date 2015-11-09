@@ -47,14 +47,15 @@ router.post('/users/register', function (req, res, next) {
 });
 
 router.get('/users', function (req, res, next) {
-    User.find().exec(function (err, users) {
-        if (err) {
-            next(err);
-            return;
-        }
+    User.find()
+        .exec(function (err, users) {
+            if (err) {
+                next(err);
+                return;
+            }
 
-        res.json(users);
-    });
+            res.json(users);
+        });
 });
 
 router.get('/users/:_id', function (req, res, next) {
@@ -69,8 +70,10 @@ router.get('/users/:_id', function (req, res, next) {
 });
 
 router.get('/users/:_id/feed', function (req, res, next) {
-    Ask.find({})
+    Ask.find()
+        .where('user').ne(req.params._id)
         .populate('user', 'name')
+        .sort('-createDate')
         .exec(function (err, asks) {
             if (err) {
                 next(err);
@@ -82,7 +85,9 @@ router.get('/users/:_id/feed', function (req, res, next) {
 });
 
 router.get('/users/:_id/asks', function (req, res, next) {
-    Ask.find({'user': req.params._id})
+    Ask.find()
+        .where('user').equals(req.params._id)
+        .sort('-createDate')
         .exec(function (err, asks) {
             if (err) {
                 next(err);
@@ -97,7 +102,7 @@ router.post('/users/:_id/asks', function (req, res, next) {
     var ask = new Ask();
     ask.user = req.params._id;
     ask.createDate = Date.now();
-    ask.status = req.body.status;
+    ask.status = 'active';
     ask.content = req.body.content;
     ask.isAnonymous = req.body.isAnonymous;
 
@@ -112,7 +117,10 @@ router.post('/users/:_id/asks', function (req, res, next) {
 });
 
 router.get('/users/:_id/OpenAsks', function (req, res, next) {
-    UserAsk.find({'user': req.params._id, 'status': 'open'})
+    UserAsk.find()
+        .where('user').equals(req.params._id)
+        .where('status').equals('open')
+        .populate('user', 'name')
         .populate('ask', 'createDate status content')
         .exec(function (err, skippedAsks) {
             if (err) {
@@ -142,7 +150,10 @@ router.post('/users/:_id/OpenAsks', function (req, res, next) {
 });
 
 router.get('/users/:_id/SkippedAsks', function (req, res, next) {
-    UserAsk.find({'user': req.params._id, 'status': 'skipped'})
+    UserAsk.find()
+        .where('user').equals(req.params._id)
+        .where('status').equals('skipped')
+        .populate('user', 'name')
         .populate('ask', 'createDate status content')
         .exec(function (err, skippedAsks) {
             if (err) {

@@ -8,7 +8,8 @@ var schema = new Schema({
     email: String,
     createDate: Date,
     facebookId: String,
-    facebookAccessToken: String
+    facebookAccessToken: String,
+    imageUrl: String
 });
 
 schema.index({"email": 1}, {unique: true});
