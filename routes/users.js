@@ -18,6 +18,7 @@ router.get('/users', function (req, res, next) {
     User.find().exec(function (err, users) {
         if (err) {
             next(err);
+            return;
         }
 
         res.json(users);
@@ -28,7 +29,7 @@ router.post('/users/register', function (req, res, next) {
     User.findOne({'facebookId': req.body.facebookId}).exec(function (err, user) {
         if (err) {
             next(err);
-
+            return;
         }
 
         if (user === null) {
@@ -65,6 +66,7 @@ router.get('/users/:id/asks', function (req, res, next) {
     ask.save(function (err) {
         if (err) {
             next(err);
+            return;
         }
     });
 
@@ -82,6 +84,7 @@ router.post('/user/:id/asks', function (req, res, next) {
     ask.save(function (err) {
         if (err) {
             next(err);
+            return;
         }
     });
 
