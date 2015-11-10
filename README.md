@@ -71,7 +71,8 @@ The Asks feed if the list of all Asks where:
             "owner": {
                 "_id": "user id",
                 "name": "user name",
-                "avatarUrl: "http://link/to/avatr.jpeg"
+                "avatarUrl: "http://link/to/avatr.jpeg",
+                "relationship": "other"
             },
             "recentReplies": [
                 {

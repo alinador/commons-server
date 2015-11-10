@@ -113,37 +113,39 @@ router.post('/users/register', function (req, res, next) {
 
 router.get('/users/:userid/feed', function (req, res, next) {
 
-    var transform = function (asks) {
-        return _.map(asks, function (ask) {
+    var transform = function (userAsks) {
+        return _.map(userAsks, function (userAsk) {
             return {
-                id: ask._id,
+                id: userAsk.ask._id,
                 owner: {
-                    id: ask.user._id,
-                    name: ask.user.name,
-                    avatarUrl: ask.user.avatarUrl,
+                    id: userAsk.user._id,
+                    name: userAsk.user.name,
+                    avatarUrl: userAsk.user.avatarUrl,
                     relationship: "other"
                 },
                 "recentReplies": [],
                 "totalReplies": 0,
-                "createTime": ask.createTime,
+                "createTime": userAsk.ask.createTime,
                 "common": "friends",
-                "content": ask.content,
-                "isAnonymous": ask.isAnonymous
+                "content": userAsk.ask.content,
+                "isAnonymous": userAsk.ask.isAnonymous
             };
         });
     };
 
-    Ask.find()
+    UserAsk.find()
         .where('user').ne(req.params.userid)
+        .where('ask').equals(req.params.askid)
+        .where('status').equals(req.params.status)
         .populate('user', 'name avatarUrl')
-        .sort('-createTime')
-        .exec(function (err, asks) {
+        .populate('ask', 'createTime content isAnonymous')
+        .exec(function (err, userAsks) {
             if (err) {
                 next(err);
                 return;
             }
 
-            res.json(transform(asks));
+            res.json(transform(userAsks));
         });
 });
 
