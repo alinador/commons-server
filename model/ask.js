@@ -7,6 +7,7 @@ var schema = new Schema({
     user: {type: Schema.Types.ObjectId, ref: 'User'},
     createTime: Date,
     status: String,
+    commons: String,
     content: String,
     isAnonymous: Boolean
 });

@@ -113,7 +113,7 @@ Post a new Ask object.
     }
 
 
-## GET /api/v1.0/users/:user-id/asks/:ask-status
+## GET /api/v1.0/users/:user-id/asks/:ask-id/:ask-status
 ### Description
 Return the user Ask objects with the input status.
 The input ```ask-status``` can be one of ```followed```, ```skipped```, or ```archived```.
@@ -128,7 +128,7 @@ The input ```ask-status``` can be one of ```followed```, ```skipped```, or ```ar
     [
         {
             "id": "ask-id",
-            "user": {
+            "owner": {
                 "_id": "user id",
                 "name": "user name",
                 "avatarUrl: "http://link/to/avatr.jpeg",

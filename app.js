@@ -16,8 +16,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
-app.use('/api/v1.0', users);
-app.use('/api/v1.0', asks);
+var apiV1 = express.Router();
+apiV1.use('/api/v1.0', users);
+apiV1.use('/api/v1.0', asks);
+
+app.use((apiV1));
+
 
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
