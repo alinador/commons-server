@@ -15,4 +15,5 @@ var schema = new Schema({
 schema.index({"user": 1}, {unique: false});
 schema.index({"createTime": 1}, {unique: false});
 
-module.exports = mongoose.model('Ask', schema);
+var model = mongoose.model('Ask', schema);
+module.exports = model;

@@ -47,7 +47,7 @@ router.param('askid', function (req, res, next, userid) {
 });
 
 router.param('status', function (req, res, next, userid) {
-    if (!_.contains(['followed', 'skipped', 'archived'], req.params.status)) {
+    if (!_.contains(UserAsk.StatusValues, req.params.status)) {
         next('route');
         return;
     }
@@ -235,10 +235,20 @@ router.put('/users/:userid/asks/:askid', function (req, res, next) {
             }
 
             if (!_.isUndefined(req.body.status)) {
+                if (!_.contains(UserAsk.StatusValues, req.body.status)) {
+                    next('route');
+                    return;
+                }
+
                 userAsk.status = req.body.status;
             }
 
             if (!_.isUndefined(req.body.muted)) {
+                if (!_.isBoolean(req.body.muted)) {
+                    next('route');
+                    return;
+                }
+
                 userAsk.muted = req.body.muted;
             }
 

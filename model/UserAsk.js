@@ -13,4 +13,7 @@ var schema = new Schema({
 
 schema.index({"user": 1, "ask": 1}, {unique: true});
 
-module.exports = mongoose.model('UserAsk', schema);
+var model = mongoose.model('UserAsk', schema);
+model.StatusValues = ['followed', 'skipped', 'archived'];
+
+module.exports = model;
