@@ -7,7 +7,7 @@ var schema = new Schema({
     name: String,
     email: String,
     avatarUrl: String,
-    createDate: Date,
+    createTime: Date,
     facebookId: String,
     facebookAccessToken: String
 });

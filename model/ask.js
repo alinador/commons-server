@@ -5,13 +5,13 @@ var Schema = mongoose.Schema;
 
 var schema = new Schema({
     user: {type: Schema.Types.ObjectId, ref: 'User'},
-    createDate: Date,
+    createTime: Date,
     status: String,
     content: String,
     isAnonymous: Boolean
 });
 
 schema.index({"user": 1}, {unique: false});
-schema.index({"createDate": 1}, {unique: false});
+schema.index({"createTime": 1}, {unique: false});
 
 module.exports = mongoose.model('Ask', schema);

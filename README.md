@@ -7,7 +7,8 @@ All date and time are in ISO 8601 UTC format, for example, "2015-11-09T09:59:15Z
 ## GET /api/v1.0/users
 
 ### Description
-Return the list of registered users.
+Return the list of all registered users objects.
+To get the complete user details, see ```GET /api/v1.0/users/:user-id```.
 
 ### Request
     GET /api/v1.0/users
@@ -27,11 +28,33 @@ Return the list of registered users.
       }
     ]
 
+## GET /api/v1.0/users/:user-id
+
+### description
+Return a user object.
+
+### Request
+    GET /api/v1.0/users/:user-id
+
+### Response
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+    
+    {
+        "_id": "user id",
+        "name": "user name",
+        "email": "user@email.com",
+        "avatarUrl: "http://link/to/avatr.jpeg",
+        "createTime": "2015-11-09T09:59:15Z",
+        "facebookId": "facebook-id",
+        "facebookAccessToken": "facebook-access-token"
+    }
+    
 ## POST /api/v1.0/users/register
 
 ### Description
 Register a user with facebook account, and return the user id.
-Create a new user if the facebook account does not exists.
+If a user with the input facebook-id does not exists, a new user object is created.
 
 ### Request
     POST /api/v1.0/users/register
@@ -53,32 +76,13 @@ Create a new user if the facebook account does not exists.
         "_id": "user id"
     }
 
-## GET /api/v1.0/users/:user-id
-
-### description
-Return a user.
-
-### Request
-    GET /api/v1.0/users/:user-id
-
-### Response
-    HTTP/1.1 200 OK
-    Content-Type: application/json
-    
-    {
-        "_id": "user id",
-        "name": "user name",
-        "email": "user@email.com",
-        "avatarUrl: "http://link/to/avatr.jpeg",
-        "createTime": "2015-11-09T09:59:15Z",
-        "facebookId": "facebook-id",
-        "facebookAccessToken": "facebook-access-token"
-    }
-
 ## GET /api/v1.0/users/:user-id/feed
 
 ### description
-Return the user asks feed.
+Return the user Asks feed.
+The Asks feed if the list of all Asks where:
+1. The Ask object status is Active.
+2. The user Ask object status does not exists (not Skipped, Follow, or Archived). 
 
 ### Request
     GET /api/v1.0/users/:user-id/feed
@@ -104,7 +108,7 @@ Return the user asks feed.
 ## POST /api/v1.0/users/:user-id/asks
 
 ### Description
-Post a new ask.
+Post a new Ask object.
 
 ### Request
     POST /api/v1.0/users/:user-id/asks
@@ -124,63 +128,13 @@ Post a new ask.
     }
 
 
-## GET /api/v1.0/users/:user-id/asks/followed
-### description
-Return the user asks with Followed status.
+## GET /api/v1.0/users/:user-id/asks/:ask-status
+### Description
+Return the user Ask objects with the input status.
+ask-status can be one of ```followed```, ```skipped```, or ```archived```.
 
 ### Request
-    GET /api/v1.0/users/:user-id/feed
-
-### Response
-    HTTP/1.1 200 OK
-    Content-Type: application/json
-    
-    [
-        {
-            "_id": "ask-id",
-            "user": {
-                "_id": "user id",
-                "name": "user name",
-                "avatarUrl: "http://link/to/avatr.jpeg",
-            },
-            "createTime": "2015-11-09T09:59:15Z",
-            "content": "The ask content",
-            "isAnonymous": "true | false"
-        }
-    ]
-    
-    
-## GET /api/v1.0/users/:user-id/asks/skipped
-### description
-Return the user asks with Skipped status.
-
-### Request
-    GET /api/v1.0/users/:user-id/skipped
-
-### Response
-    HTTP/1.1 200 OK
-    Content-Type: application/json
-    
-    [
-        {
-            "_id": "ask-id",
-            "user": {
-                "_id": "user id",
-                "name": "user name",
-                "avatarUrl: "http://link/to/avatr.jpeg",
-            },
-            "createTime": "2015-11-09T09:59:15Z",
-            "content": "The ask content",
-            "isAnonymous": "true | false"
-        }
-    ]
-     
-## GET /api/v1.0/users/:user-id/asks/archived
-### description
-Return the user asks with Archived status.
-
-### Request
-    GET /api/v1.0/users/:user-id/archived
+    GET /api/v1.0/users/:user-id/ask-status
 
 ### Response
     HTTP/1.1 200 OK
@@ -218,27 +172,4 @@ Update a user ask status.
     HTTP/1.1 200 OK
     Content-Type: application/json
     
-
-
-
-{
-	status:: <value>
-}
-
-Description: Change s user status with regard to a aspcific ask
-:id = id of the use
-<status>  can be one of the following
-follow used when user clicks open, reply or follow
-skip use when use is not interested in an ask
-archive - when user want to archive the ask
-Sample payload
-{
-{
-
-Sample return value
-{
-}
-
-
-
-
+    
