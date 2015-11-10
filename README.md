@@ -1,11 +1,10 @@
 # Commons Server RESTFull API Documentation
 
 ## Data Types
-### Date and Time
-All date and time are in ISO 8601 UTC format, for example, "2015-11-09T09:59:15Z"
+### Time
+The time format is ISO 8601 UTC. for example, "2015-11-09T09:59:15Z"
 
 ## GET /api/v1.0/users
-
 ### Description
 Return the list of all registered users objects.
 To get the complete user details, see ```GET /api/v1.0/users/:user-id```.
@@ -29,7 +28,6 @@ To get the complete user details, see ```GET /api/v1.0/users/:user-id```.
     ]
 
 ## GET /api/v1.0/users/:user-id
-
 ### description
 Return a user object.
 
@@ -51,7 +49,6 @@ Return a user object.
     }
     
 ## POST /api/v1.0/users/register
-
 ### Description
 Register a user with facebook account, and return the user id.
 If a user with the input facebook-id does not exists, a new user object is created.
@@ -77,12 +74,11 @@ If a user with the input facebook-id does not exists, a new user object is creat
     }
 
 ## GET /api/v1.0/users/:user-id/feed
-
 ### description
 Return the user Asks feed.
 The Asks feed if the list of all Asks where:
 1. The Ask object status is Active.
-2. The user Ask object status does not exists (not Skipped, Follow, or Archived). 
+2. The user Ask object status does not exists (the user ask status of Skipped, Follow, or Archived was not set). 
 
 ### Request
     GET /api/v1.0/users/:user-id/feed
