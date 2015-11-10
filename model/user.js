@@ -12,7 +12,7 @@ var schema = new Schema({
     facebookAccessToken: String
 });
 
-schema.index({"email": 1}, {unique: true});
+schema.index({"email": 1}, {unique: false});
 schema.index({"facebookId": 1}, {unique: true});
 
 module.exports = mongoose.model('User', schema);

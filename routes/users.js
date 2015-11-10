@@ -46,6 +46,15 @@ router.param('askid', function (req, res, next, userid) {
         });
 });
 
+router.param('status', function (req, res, next, userid) {
+    if (!_.contains(['followed', 'skipped', 'archived'], req.params.status)) {
+        next('route');
+        return;
+    }
+
+    next();
+});
+
 router.all(function (req, res, next) {
     next();
 });
@@ -208,7 +217,7 @@ router.post('/users/:userid/asks', function (req, res, next) {
 
 router.put('/users/:userid/asks/:askid', function (req, res, next) {
 
-    UserAsk.find()
+    UserAsk.findOne()
         .where('user').equals(req.params.userid)
         .where('ask').equals(req.params.askid)
         .exec(function (err, userAsk) {
@@ -219,6 +228,8 @@ router.put('/users/:userid/asks/:askid', function (req, res, next) {
 
             if (_.isNull(userAsk)) {
                 userAsk = new UserAsk();
+                userAsk.user = req.params.userid;
+                userAsk.ask = req.params.askid;
                 userAsk.status = 'followed';
                 userAsk.muted = false;
             }
@@ -243,11 +254,6 @@ router.put('/users/:userid/asks/:askid', function (req, res, next) {
 });
 
 router.get('/users/:userid/asks/:status', function (req, res, next) {
-
-    if (!_.contains(['followed', 'skipped', 'archived'], req.params.status)) {
-        next();
-        return;
-    }
 
     var transform = function (userAsks) {
         return _.map(userAsks, function (userAsk) {
