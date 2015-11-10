@@ -8,7 +8,7 @@ var schema = new Schema({
     ask: {type: Schema.Types.ObjectId, ref: 'Ask'},
     statusDate: Date,
     status: String,
-    mute: Boolean
+    muted: Boolean
 });
 
 schema.index({"user": 1, "ask": 1}, {unique: true});

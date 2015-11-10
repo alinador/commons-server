@@ -19,10 +19,6 @@ router.all(function (req, res, next) {
 router.get('/users', function (req, res, next) {
 
     var transform = function (users) {
-        if (_.isNull(users)) {
-            return [];
-        }
-
         return _.map(users, function (user) {
             return {
                 id: user._id,
@@ -49,10 +45,6 @@ router.get('/users', function (req, res, next) {
 router.get('/users/:userid', function (req, res, next) {
 
     var transform = function (user) {
-        if (_.isNull(user)) {
-            return {};
-        }
-
         return {
             id: user._id,
             name: user.name,
@@ -68,6 +60,11 @@ router.get('/users/:userid', function (req, res, next) {
         .exec(function (err, user) {
             if (err) {
                 next(err);
+                return;
+            }
+
+            if (_.isNull(user)) {
+                next();
                 return;
             }
 
@@ -174,9 +171,44 @@ router.post('/users/:userid/asks', function (req, res, next) {
     });
 });
 
+router.put('/users/:userid/asks/:askid', function (req, res, next) {
+
+    UserAsk.find()
+        .where('user').equals(req.params.userid)
+        .where('ask').equals(req.params.askid)
+        .exec(function (err, userAsk) {
+            if (err) {
+                next(err);
+                return;
+            }
+
+            if (_.isNull(userAsk)) {
+                next();
+                return;
+            }
+
+            if(!_.isUndefined(req.body.status)) {
+                userAsk.status = req.body.status;
+            }
+
+            if(!_.isUndefined(req.body.muted)) {
+                userAsk.muted = req.body.muted;
+            }
+
+            userAsk.save(function (err) {
+                if (err) {
+                    next(err);
+                    return;
+                }
+
+                res.json();
+            });
+        });
+});
+
 router.get('/users/:userid/asks/:status', function (req, res, next) {
 
-    if(!_.contains(['followed', 'skipped', 'archived'], req.params.status)) {
+    if (!_.contains(['followed', 'skipped', 'archived'], req.params.status)) {
         next();
         return;
     }
@@ -212,23 +244,6 @@ router.get('/users/:userid/asks/:status', function (req, res, next) {
 
             res.json(transform(userAsks));
         });
-});
-
-router.post('/users/:userid/SkippedAsks', function (req, res, next) {
-    var userAsk = new UserAsk();
-    userAsk.user = req.params.userid;
-    userAsk.ask = req.body.askId;
-    userAsk.statusDate = Date.now();
-    userAsk.status = 'skipped';
-
-    userAsk.save(function (err) {
-        if (err) {
-            next(err);
-            return;
-        }
-
-        res.json(userAsk);
-    });
 });
 
 module.exports = router;
