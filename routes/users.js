@@ -113,39 +113,38 @@ router.post('/users/register', function (req, res, next) {
 
 router.get('/users/:userid/feed', function (req, res, next) {
 
-    var transform = function (userAsks) {
-        return _.map(userAsks, function (userAsk) {
+    var transform = function (asks) {
+        return _.map(asks, function (ask) {
             return {
-                id: userAsk.ask._id,
+                id: ask._id,
                 owner: {
-                    id: userAsk.user._id,
-                    name: userAsk.user.name,
-                    avatarUrl: userAsk.user.avatarUrl,
+                    id: ask.user._id,
+                    name: ask.user.name,
+                    avatarUrl: ask.user.avatarUrl,
                     relationship: "other"
                 },
                 "recentReplies": [],
                 "totalReplies": 0,
-                "createTime": userAsk.ask.createTime,
+                "createTime": ask.createTime,
                 "common": "friends",
-                "content": userAsk.ask.content,
-                "isAnonymous": userAsk.ask.isAnonymous
+                "content": ask.content,
+                "isAnonymous": ask.isAnonymous
             };
         });
     };
 
-    UserAsk.find()
+    Ask.find()
         .where('user').ne(req.params.userid)
-        .where('ask').equals(req.params.askid)
-        .where('status').equals(req.params.status)
+        .where('status').equals('active')
         .populate('user', 'name avatarUrl')
-        .populate('ask', 'createTime content isAnonymous')
-        .exec(function (err, userAsks) {
+        .sort('-createTime')
+        .exec(function (err, asks) {
             if (err) {
                 next(err);
                 return;
             }
 
-            res.json(transform(userAsks));
+            res.json(transform(asks));
         });
 });
 
@@ -175,7 +174,12 @@ router.post('/users/:userid/asks', function (req, res, next) {
     });
 });
 
-router.get('/users/:userid/asks/:askid/:status', function (req, res, next) {
+router.get('/users/:userid/asks/:status', function (req, res, next) {
+
+    if(!_.contains(['followed', 'skipped', 'archived'], req.params.status)) {
+        next();
+        return;
+    }
 
     var transform = function (userAsks) {
         return _.map(userAsks, function (userAsk) {
@@ -197,7 +201,6 @@ router.get('/users/:userid/asks/:askid/:status', function (req, res, next) {
 
     UserAsk.find()
         .where('user').equals(req.params.userid)
-        .where('ask').equals(req.params.askid)
         .where('status').equals(req.params.status)
         .populate('user', 'name avatarUrl')
         .populate('ask', 'createTime content isAnonymous')

@@ -114,9 +114,9 @@ Post a new Ask object.
     }
 
 
-## GET /api/v1.0/users/:user-id/asks/:ask-id/:ask-status
+## GET /api/v1.0/users/:user-id/asks/:ask-status
 ### Description
-Return the user Ask objects with the input status.
+Return the user Ask objects with a matching ```askstatus```.
 The input ```ask-status``` can be one of ```followed```, ```skipped```, or ```archived```.
 
 ### Request
