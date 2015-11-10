@@ -2,31 +2,7 @@
 
 ## Data Types
 ### Time
-Time format is the ISO 8601 UTC format. 
-For example, "2015-11-09T09:59:15Z"
-
-## GET /api/v1.0/users
-### Description
-Return the list of all registered users objects.
-To get the complete user details, see ```GET /api/v1.0/users/:user-id```.
-
-### Request
-    GET /api/v1.0/users
-
-### Response
-    HTTP/1.1 200 OK
-    Content-Type: application/json
-    
-    [
-      {
-        "_id": "user id",
-        "name": "user name",
-        "email": "user@email.com",
-        "avatarUrl: "http://link/to/avatr.jpeg",
-        "createTime": "2015-11-09T09:59:15Z",
-        "facebookId": "facebook-id",
-      }
-    ]
+Time is in unix time utc. 
 
 ## GET /api/v1.0/users/:user-id
 ### description
@@ -40,13 +16,12 @@ Return a user object.
     Content-Type: application/json
     
     {
-        "_id": "user id",
+        "id": "user id",
         "name": "user name",
         "email": "user@email.com",
         "avatarUrl: "http://link/to/avatr.jpeg",
-        "createTime": "2015-11-09T09:59:15Z",
-        "facebookId": "facebook-id",
-        "facebookAccessToken": "facebook-access-token"
+        "createTime": "timestamp",
+        "facebookId": "facebook-id"
     }
     
 ## POST /api/v1.0/users/register
@@ -71,7 +46,7 @@ If a user with the input ```facebook-id``` does not exists, a new user object is
     Content-Type: application/json
     
     {
-        "_id": "user id"
+        "id": "user id"
     }
 
 ## GET /api/v1.0/users/:user-id/feed
@@ -92,13 +67,23 @@ The Asks feed if the list of all Asks where:
     
     [
         {
-            "_id": "ask-id",
-            "user": {
+            "id": "ask-id",
+            "owner": {
                 "_id": "user id",
                 "name": "user name",
-                "avatarUrl: "http://link/to/avatr.jpeg",
+                "avatarUrl: "http://link/to/avatr.jpeg"
             },
-            "createTime": "2015-11-09T09:59:15Z",
+            "recentReplies": [
+                {
+                    "_id": "user id",
+                    "name": "user name",
+                    "avatarUrl: "http://link/to/avatr.jpeg",
+                    "relationship": "1st | 2nd | other"
+                }
+            ],
+            "totalReplies": "number"
+            "createTime": "timestamp",
+            "common": "friends",
             "content": "The ask content",
             "isAnonymous": "true | false"
         }
@@ -114,6 +99,7 @@ Post a new Ask object.
     Content-Type: application/json
     
     { 
+        "common": "friends",
         "content": "The ask content",
         "isAnonymous": "true | false"
     }
@@ -123,14 +109,14 @@ Post a new Ask object.
     Content-Type: application/json
     
     {
-        "_id": "ask-id",
+        "id": "ask-id",
     }
 
 
 ## GET /api/v1.0/users/:user-id/asks/:ask-status
 ### Description
 Return the user Ask objects with the input status.
-```ask-status``` can be one of ```followed```, ```skipped```, or ```archived```.
+The input ```ask-status``` can be one of ```followed```, ```skipped```, or ```archived```.
 
 ### Request
     GET /api/v1.0/users/:user-id/ask-status
@@ -141,13 +127,15 @@ Return the user Ask objects with the input status.
     
     [
         {
-            "_id": "ask-id",
+            "id": "ask-id",
             "user": {
                 "_id": "user id",
                 "name": "user name",
                 "avatarUrl: "http://link/to/avatr.jpeg",
+                "relationship": "1st | 2nd | other"
             },
-            "createTime": "2015-11-09T09:59:15Z",
+            "createTime": "timestamp",
+            "common": "friends",
             "content": "The ask content",
             "isAnonymous": "true | false"
         }
