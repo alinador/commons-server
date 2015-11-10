@@ -20,9 +20,9 @@ router.get('/users', function (req, res, next) {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                avatarUrl: users.avatarUrl,
-                createTime: users.createTime,
-                facebookId: users.facebookId
+                avatarUrl: user.avatarUrl,
+                createTime: user.createTime,
+                facebookId: user.facebookId
             };
         });
     };
@@ -41,6 +41,10 @@ router.get('/users', function (req, res, next) {
 router.get('/users/:userid', function (req, res, next) {
 
     var transform = function (user) {
+        if (_.isNull(user)) {
+            return null;
+        }
+
         return {
             id: user._id,
             name: user.name,
@@ -51,14 +55,16 @@ router.get('/users/:userid', function (req, res, next) {
         };
     };
 
-    User.findOne({'id': req.params.userid}).exec(function (err, user) {
-        if (err) {
-            next(err);
-            return;
-        }
+    User.findOne()
+        .where({'_id': req.params.userid})
+        .exec(function (err, user) {
+            if (err) {
+                next(err);
+                return;
+            }
 
-        res.json(transform(user));
-    });
+            res.json(transform(user));
+        });
 });
 
 router.post('/users/register', function (req, res, next) {
