@@ -5,7 +5,7 @@
 Time is in unix time utc. 
 
 ## GET /api/v1.0/users/:user-id
-### description
+### Description
 Return a user object.
 
 ### Request
