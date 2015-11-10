@@ -2,7 +2,8 @@
 
 ## Data Types
 ### Time
-The time format is ISO 8601 UTC. for example, "2015-11-09T09:59:15Z"
+Time format is the ISO 8601 UTC format. 
+For example, "2015-11-09T09:59:15Z"
 
 ## GET /api/v1.0/users
 ### Description
@@ -51,7 +52,7 @@ Return a user object.
 ## POST /api/v1.0/users/register
 ### Description
 Register a user with facebook account, and return the user id.
-If a user with the input facebook-id does not exists, a new user object is created.
+If a user with the input ```facebook-id``` does not exists, a new user object is created.
 
 ### Request
     POST /api/v1.0/users/register
@@ -77,8 +78,10 @@ If a user with the input facebook-id does not exists, a new user object is creat
 ### description
 Return the user Asks feed.
 The Asks feed if the list of all Asks where:
-1. The Ask object status is Active.
-2. The user Ask object status does not exists (the user ask status of Skipped, Follow, or Archived was not set). 
+
+1. The Ask object status is ```active```.
+
+2. The user Ask object status does not exists (the user ask status of ```skipped```, ```follow```, or ```archived``` was not set). 
 
 ### Request
     GET /api/v1.0/users/:user-id/feed
@@ -127,7 +130,7 @@ Post a new Ask object.
 ## GET /api/v1.0/users/:user-id/asks/:ask-status
 ### Description
 Return the user Ask objects with the input status.
-ask-status can be one of ```followed```, ```skipped```, or ```archived```.
+```ask-status``` can be one of ```followed```, ```skipped```, or ```archived```.
 
 ### Request
     GET /api/v1.0/users/:user-id/ask-status
