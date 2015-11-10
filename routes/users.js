@@ -8,8 +8,23 @@ var UserAsk = require('../model/UserAsk');
 
 var router = express.Router();
 
-router.all(function (req, res, next) {
-    next();
+router.param('userid', function (req, res, next, userid) {
+    User.findOne()
+        .select('_id')
+        .where({'_id': req.params.userid})
+        .exec(function (err, user) {
+            if (err) {
+                next(err);
+                return;
+            }
+
+            if (_.isNull(user)) {
+                next('route');
+                return;
+            }
+
+            next();
+        });
 });
 
 router.all(function (req, res, next) {
@@ -56,6 +71,7 @@ router.get('/users/:userid', function (req, res, next) {
     };
 
     User.findOne()
+        .select('name email avatarUrl createTime facebookId')
         .where({'_id': req.params.userid})
         .exec(function (err, user) {
             if (err) {
@@ -173,36 +189,52 @@ router.post('/users/:userid/asks', function (req, res, next) {
 
 router.put('/users/:userid/asks/:askid', function (req, res, next) {
 
-    UserAsk.find()
-        .where('user').equals(req.params.userid)
-        .where('ask').equals(req.params.askid)
-        .exec(function (err, userAsk) {
+    User.findOne()
+        .select('_id')
+        .where({'_id': req.params.userid})
+        .exec(function (err, user) {
             if (err) {
                 next(err);
                 return;
             }
 
-            if (_.isNull(userAsk)) {
+            if (_.isNull(user)) {
                 next();
                 return;
             }
 
-            if(!_.isUndefined(req.body.status)) {
-                userAsk.status = req.body.status;
-            }
+            UserAsk.find()
+                .where('user').equals(req.params.userid)
+                .where('ask').equals(req.params.askid)
+                .exec(function (err, userAsk) {
+                    if (err) {
+                        next(err);
+                        return;
+                    }
 
-            if(!_.isUndefined(req.body.muted)) {
-                userAsk.muted = req.body.muted;
-            }
+                    if (_.isNull(userAsk)) {
+                        userAsk = new UserAsk();
+                        userAsk.status = 'followed';
+                        userAsk.muted = false;
+                    }
 
-            userAsk.save(function (err) {
-                if (err) {
-                    next(err);
-                    return;
-                }
+                    if (!_.isUndefined(req.body.status)) {
+                        userAsk.status = req.body.status;
+                    }
 
-                res.json();
-            });
+                    if (!_.isUndefined(req.body.muted)) {
+                        userAsk.muted = req.body.muted;
+                    }
+
+                    userAsk.save(function (err) {
+                        if (err) {
+                            next(err);
+                            return;
+                        }
+
+                        res.json();
+                    });
+                });
         });
 });
 
