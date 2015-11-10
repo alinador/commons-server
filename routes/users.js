@@ -12,9 +12,17 @@ router.all(function (req, res, next) {
     next();
 });
 
+router.all(function (req, res, next) {
+    next();
+});
+
 router.get('/users', function (req, res, next) {
 
     var transform = function (users) {
+        if (_.isNull(users)) {
+            return [];
+        }
+
         return _.map(users, function (user) {
             return {
                 id: user._id,
@@ -42,7 +50,7 @@ router.get('/users/:userid', function (req, res, next) {
 
     var transform = function (user) {
         if (_.isNull(user)) {
-            return null;
+            return {};
         }
 
         return {
