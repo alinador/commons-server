@@ -2,6 +2,7 @@
   "name": "commons-server",
   "version": "0.0.0",
   "private": true,
+  "main": "bin/server",
   "scripts": {
     "start": "node ./bin/server"
   },
