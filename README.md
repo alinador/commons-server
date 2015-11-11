@@ -69,14 +69,14 @@ The Asks feed if the list of all Asks where:
         {
             "id": "ask-id",
             "owner": {
-                "_id": "user id",
+                "id": "user id",
                 "name": "user name",
                 "avatarUrl: "http://link/to/avatr.jpeg",
                 "relationship": "other"
             },
             "recentReplies": [
                 {
-                    "_id": "user id",
+                    "id": "user id",
                     "name": "user name",
                     "avatarUrl: "http://link/to/avatr.jpeg",
                     "relationship": "1st | 2nd | other"
